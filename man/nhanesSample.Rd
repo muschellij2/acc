@@ -4,7 +4,9 @@
 \name{nhanesSample}
 \alias{nhanesSample}
 \title{NHANES data}
-\format{A data frame with 184 rows and 4 variables, for 100 randomly sampled individuals in the NHANES 2003-04. This consists physical activity data for 100 individuals.}
+\format{
+A data frame with 184 rows and 4 variables, for 100 randomly sampled individuals in the NHANES 2003-04. This consists physical activity data for 100 individuals.
+}
 \usage{
 data(nhanesSample)
 }
@@ -20,4 +22,3 @@ NHANES 2003-04 data
 }
 }
 \keyword{datasets}
-

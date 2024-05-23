@@ -32,7 +32,7 @@ simRtc <- function(n,beta,nu,mu,inf,nobs){
   # generating the random time gaps between events for each subject
   y=matrix(,n,K);
   for (i in 1:n){
-    y[i,1:k[i]]=rexp(k[i],8/(60*24*7))
+    y[i,1:k[i]]=stats::rexp(k[i],8/(60*24*7))
   } 
   
   # generating observation time points for each subject

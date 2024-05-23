@@ -30,64 +30,16 @@ doPanelFit.AEE <- function(DF, panelMatrix, timeGrid, X, engine, stdErr, weight=
   
   
   if (is.null(weight)) {
-  f <- function(beta, e) {
-    lambda <- c(colSums(e)) / c(t(r) %*% exp(X %*% beta))
-    c(t(X) %*% (rowSums(e) - c(exp(X %*% beta)) * c(r %*% lambda)))
-  }
-  
-  sStep <- function(f, beta, e) {
-    if (ncol(X) == 1) {
-      beta <- uniroot(f, engine@interval, e=e)$root
-    } else {
-      beta <- nleqslv(beta, function(x) f(x, e))$x
-    }
-    
-    lambda <- colSums(e) / c(t(r) %*% exp(X %*% beta))
-    list(beta=beta,
-         lambda=lambda)
-  }
-  
-  ##############################
-  # Initialize e and r matrix
-  e <- r <- matrix(0, N, K)
-  for (i in 1:N) {
-    set <- which(!is.na(panelMatrix[i, ]))
-    mi <- tail(set, 1)
-    dset <- diff(c(0, set))
-    
-    e[i, 1:mi] <- rep(panelMatrix[i, set] / dset, dset)
-    r[i, 1:mi] <- 1
-  }
-  
-  convergence <- 1
-  sRes <- sStep(f, engine@betaInit, e)
-  for (i in 2:engine@maxIter) {
-    e <- eStep(sRes$lambda)
-    
-    betaPre <- sRes$beta
-    sRes <- sStep(f, sRes$beta, e)
-    s <- sRes$beta - betaPre
-    
-    if (max(abs(s)) < engine@absTol | max(abs(s / betaPre)) < engine@relTol) {
-      convergence <- 0
-      break
-    }
-  }
-  iter <- i
-  }
-  
-  
-  if (!is.null(weight)) {
-    f <- function(beta, e, weight) {
+    f <- function(beta, e, r) {
       lambda <- c(colSums(e)) / c(t(r) %*% exp(X %*% beta))
-      c(t(X) %*% diag(weight) %*% (rowSums(e) - c(exp(X %*% beta)) * c(r %*% lambda)))
+      c(t(X) %*% (rowSums(e) - c(exp(X %*% beta)) * c(r %*% lambda)))
     }
     
-    sStep <- function(f, beta, e, weight) {
+    sStep <- function(f, beta, e, r) {
       if (ncol(X) == 1) {
-        beta <- uniroot(f, engine@interval, e=e, weight=weight)$root
+        beta <- uniroot(f, engine@interval, e=e)$root
       } else {
-        beta <- nleqslv(beta, function(x) f(x, e, weight))$x
+        beta <- nleqslv(beta, function(x) f(x, e, r = r))$x
       }
       
       lambda <- colSums(e) / c(t(r) %*% exp(X %*% beta))
@@ -108,14 +60,62 @@ doPanelFit.AEE <- function(DF, panelMatrix, timeGrid, X, engine, stdErr, weight=
     }
     
     convergence <- 1
-    sRes <- sStep(f, engine@betaInit, e, weight)
+    sRes <- sStep(f, engine@betaInit, e, r = r)
+    for (i in 2:engine@maxIter) {
+      e <- eStep(sRes$lambda)
+      
+      betaPre <- sRes$beta
+      sRes <- sStep(f, sRes$beta, e, r = r)
+      s <- sRes$beta - betaPre
+      
+      if (max(abs(s)) < engine@absTol | max(abs(s / betaPre)) < engine@relTol) {
+        convergence <- 0
+        break
+      }
+    }
+    iter <- i
+  }
+  
+  
+  if (!is.null(weight)) {
+    weightf <- function(beta, e, weight, r) {
+      lambda <- c(colSums(e)) / c(t(r) %*% exp(X %*% beta))
+      c(t(X) %*% diag(weight) %*% (rowSums(e) - c(exp(X %*% beta)) * c(r %*% lambda)))
+    }
+    
+    weightsStep <- function(f, beta, e, weight, r) {
+      if (ncol(X) == 1) {
+        beta <- uniroot(weightf, engine@interval, e=e, weight=weight)$root
+      } else {
+        beta <- nleqslv(beta, function(x) weightf(x, e, weight, r = r))$x
+      }
+      
+      lambda <- colSums(e) / c(t(r) %*% exp(X %*% beta))
+      list(beta=beta,
+           lambda=lambda)
+    }
+    
+    ##############################
+    # Initialize e and r matrix
+    e <- r <- matrix(0, N, K)
+    for (i in 1:N) {
+      set <- which(!is.na(panelMatrix[i, ]))
+      mi <- tail(set, 1)
+      dset <- diff(c(0, set))
+      
+      e[i, 1:mi] <- rep(panelMatrix[i, set] / dset, dset)
+      r[i, 1:mi] <- 1
+    }
+    
+    convergence <- 1
+    sRes <- weightsStep(f, engine@betaInit, e, weight, r = r)
     
     for (i in 2:engine@maxIter) {
       #e <- eStep(sRes$lambda)
       e <- eStep(sRes$lambda)
       
       betaPre <- sRes$beta
-      sRes <- sStep(f, sRes$beta, e, weight)
+      sRes <- weightsStep(f, sRes$beta, e, weight, r = r)
       s <- sRes$beta - betaPre
       
       if (max(abs(s)) < engine@absTol | max(abs(s / betaPre)) < engine@relTol) {
@@ -165,69 +165,16 @@ doPanelFit.AEEX <- function(DF, panelMatrix, timeGrid, X, engine, stdErr, weight
   }
   
   if (is.null(weight)) {
-  f <- function(beta, e) {
-    lambda <- c(colSums(e)) / sum(exp(X %*% beta))
-    c(t(X) %*% (rowSums(e) - c(exp(X %*% beta)) * sum(lambda)))
-  }
-  
-  sStep <- function(f, beta, e) {
-    if (ncol(X) == 1) {
-      beta <- uniroot(f, engine@interval, e=e)$root
-    } else {
-      beta <- nleqslv(beta, function(x) f(x, e))$x
-    }
-    
-    lambda <- colSums(e) / sum(exp(X %*% beta))
-    list(beta=beta,
-         lambda=lambda)
-  }
-  
-  ##############################
-  # Initialize e matrix
-  e <- matrix(0, N, K)
-  for (i in 1:N) {
-    sq <- which(!is.na(panelMatrix[i, ]))
-    mi <- tail(sq, 1)
-    dsq <- diff(c(0, sq))
-    
-    e[i, 1:mi] <- rep(panelMatrix[i, sq] / dsq, dsq)
-    
-    if (mi < K) {
-      e[i, (mi + 1):K] <- sum(panelMatrix[i, sq]) / mi
-    }
-  }
-  
-  a <- engine@a
-  
-  # Iteration
-  convergence <- 1
-  sRes <- sStep(f, engine@betaInit, e)
-  for (i in 2:engine@maxIter) {
-    e <- eStep(sRes$lambda, a)
-    
-    betaPre <- sRes$beta
-    sRes <- sStep(f, sRes$beta, e)
-    s <- sRes$beta - betaPre
-    
-    if (max(abs(s)) < engine@absTol | max(abs(s / betaPre)) < engine@relTol) {
-      convergence <- 0
-      break
-    }
-  }
-  iter <- i
-  }
-  
-  if (!is.null(weight)) {
-    f <- function(beta, e, weight) {
+    f <- function(beta, e) {
       lambda <- c(colSums(e)) / sum(exp(X %*% beta))
-      c(t(X) %*% diag(weight) %*% (rowSums(e) - c(exp(X %*% beta)) * sum(lambda)))
+      c(t(X) %*% (rowSums(e) - c(exp(X %*% beta)) * sum(lambda)))
     }
     
-    sStep <- function(f, beta, e, weight) {
+    sStep <- function(f, beta, e) {
       if (ncol(X) == 1) {
-        beta <- uniroot(f, engine@interval, e=e, weight=weight)$root
+        beta <- uniroot(f, engine@interval, e=e)$root
       } else {
-        beta <- nleqslv(beta, function(x) f(x, e, weight))$x
+        beta <- nleqslv(beta, function(x) f(x, e))$x
       }
       
       lambda <- colSums(e) / sum(exp(X %*% beta))
@@ -254,13 +201,66 @@ doPanelFit.AEEX <- function(DF, panelMatrix, timeGrid, X, engine, stdErr, weight
     
     # Iteration
     convergence <- 1
-    sRes <- sStep(f, engine@betaInit, e, weight)
+    sRes <- sStep(f, engine@betaInit, e)
+    for (i in 2:engine@maxIter) {
+      e <- eStep(sRes$lambda, a)
+      
+      betaPre <- sRes$beta
+      sRes <- sStep(f, sRes$beta, e)
+      s <- sRes$beta - betaPre
+      
+      if (max(abs(s)) < engine@absTol | max(abs(s / betaPre)) < engine@relTol) {
+        convergence <- 0
+        break
+      }
+    }
+    iter <- i
+  }
+  
+  if (!is.null(weight)) {
+    weightf <- function(beta, e, weight) {
+      lambda <- c(colSums(e)) / sum(exp(X %*% beta))
+      c(t(X) %*% diag(weight) %*% (rowSums(e) - c(exp(X %*% beta)) * sum(lambda)))
+    }
+    
+    weightsStep <- function(f, beta, e, weight) {
+      if (ncol(X) == 1) {
+        beta <- uniroot(weightf, engine@interval, e=e, weight=weight)$root
+      } else {
+        beta <- nleqslv(beta, function(x) weightf(x, e, weight))$x
+      }
+      
+      lambda <- colSums(e) / sum(exp(X %*% beta))
+      list(beta=beta,
+           lambda=lambda)
+    }
+    
+    ##############################
+    # Initialize e matrix
+    e <- matrix(0, N, K)
+    for (i in 1:N) {
+      sq <- which(!is.na(panelMatrix[i, ]))
+      mi <- tail(sq, 1)
+      dsq <- diff(c(0, sq))
+      
+      e[i, 1:mi] <- rep(panelMatrix[i, sq] / dsq, dsq)
+      
+      if (mi < K) {
+        e[i, (mi + 1):K] <- sum(panelMatrix[i, sq]) / mi
+      }
+    }
+    
+    a <- engine@a
+    
+    # Iteration
+    convergence <- 1
+    sRes <- weightsStep(f, engine@betaInit, e, weight)
     for (i in 2:engine@maxIter) {
       #e <- estepAEE(panelMatrix,sRes$lambda,a)
       e <- eStep(sRes$lambda,a)
       
       betaPre <- sRes$beta
-      sRes <- sStep(f, sRes$beta, e, weight)
+      sRes <- weightsStep(f, sRes$beta, e, weight)
       s <- sRes$beta - betaPre
       
       if (max(abs(s)) < engine@absTol | max(abs(s / betaPre)) < engine@relTol) {

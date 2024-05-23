@@ -4,7 +4,9 @@
 \name{NHANES}
 \alias{NHANES}
 \title{NHANES data}
-\format{A data frame with 19323 rows and 11 variables. This consists physical activity data for 2763 individuals.}
+\format{
+A data frame with 19323 rows and 11 variables. This consists physical activity data for 2763 individuals.
+}
 \usage{
 data(NHANES)
 }
@@ -27,4 +29,3 @@ NHANES 2003-04 data
 }
 }
 \keyword{datasets}
-

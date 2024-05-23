@@ -125,7 +125,7 @@ accSummary <- function (data, tri = "FALSE", axis = "NULL", spuriousDef = 20,
     tolerance <- 0
   }
   myRollSum<- function(x, k) { 
-    rs <- roll_sum(x, k)
+    rs <- RcppRoll::roll_sum(x, k)
     rsp <- c(rs,rep(NA,k-1))
     return(rsp)
   }

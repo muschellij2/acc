@@ -20,7 +20,7 @@ simStudy <- function(n,numsim,beta,nu,mu,inf=FALSE,nobs){
     
     print(paste('Generated data for dataset ',i))
     
-    gee.fit <- suppressMessages(gee(min ~ x1 ,data = simdata, id = ID, family = "poisson", corstr = "independence",silent=T))
+    gee.fit <- suppressMessages(gee::gee(min ~ x1 ,data = simdata, id = ID, family = "poisson", corstr = "independence",silent=T))
     print(paste('GEE fit for dataset ',i))
     
     fitted.gee <- c(summary(gee.fit)$coefficients[2,1],
