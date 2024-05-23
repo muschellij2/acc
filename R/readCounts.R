@@ -1,9 +1,38 @@
+#' Reads counts data in .dat, .agd, or .csv format for Actigraph GT1M and GT3X
+#' devices
+#' 
+#' Reads counts data in .dat, .agd, or .csv format for Actigraph GT1M and GT3X
+#' devices. Device type and epoch is automatically detected and reported in the
+#' console.
+#' 
+#' 
+#' @param filename Speficy full file path and file name. e.g. C:/mydata.dat or
+#' C:/mydata.csv
+#' @return
+#' 
+#' For uni-axial accelerometer (GT1M), two columns are returned, consisting of:
+#' [TimeStamp,Counts] For tri-axial accelerometer (GT3X), four columns are
+#' returned, consisting of: [TimeStamp,x,y,z]
+#' @author Jaejoon Song <jjsong2@@mdanderson.org>
+#' @keywords accelerometer
+#' @examples
+#' 
+#' 
+#' ##
+#' ## A example to read counts data
+#' ##
+#' \dontrun{
+#' accData1 <- readCounts("C:/mydata.agd")
+#' accData1 <- readCounts("C:/mydata.dat")
+#' accData2 <- readCounts("C:/mydata.csv")
+#' }
+#' 
+#' 
+#' 
 #' @export
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
 #' @importFrom stats complete.cases
-
-
 readCounts <- function (filename, dateformat = "%y-%b-%d", timeformat = "%H:%M:%S", 
                         timezone = "GMT") 
 {

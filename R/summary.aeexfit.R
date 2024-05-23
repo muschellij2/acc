@@ -1,9 +1,27 @@
+
+
+
+
+#' Summary method for aeexfit objects
+#' 
+#' Prints estimated parameters for \code{aeexfit} object
+#' 
+#' 
+#' @param object A \code{aeexfit} object
+#' @param digits Minimum number of significant digits to be used for most
+#' numbers.
+#' @param dig.tst Minimum number of significant digits for the test statistics
+#' @param ... ...
+#' @return Estimated parameters for aeefit objects
+#' @author Jaejoon Song <jjsong2@@mdanderson.org>
+#' @keywords summary.aeexfit
+#' @examples
+#' 
+#' ##Will put an example here
 #' @export
 #' @importFrom stats printCoefmat pnorm
 #' @importFrom methods setClass setMethod
 #' @method summary aeexfit
-
-
 summary.aeexfit <- function(object, digits = 3, dig.tst = 2, ...) {
   #if(is.null(digits)) digits <- options()$digits
   #else options(digits = digits)

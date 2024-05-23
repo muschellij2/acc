@@ -1,9 +1,29 @@
-#' @export
-#' @importFrom utils head tail 
-#' @importFrom stats rbinom rgamma rpois na.omit aggregate
-
-
-
+#' Simulates minutes of physical activity per day
+#' 
+#' Simulates minutes of physical activity per day with realistic missing data
+#' patterns
+#' 
+#' 
+#' @param n Number of individuals in the simulated data.
+#' @param type Whether to simulate data from informative/non-informative
+#' observation/censoring patterns. Options: i) 'inf', ii) 'noninf'.
+#' @param beta True coefficient for the binary covariate.
+#' @param minday Minimun number of observation days.
+#' @param maxday Maximum number of observation days.
+#' @return A simulated dataset is returned with four columns: [ID, day, min,
+#' x1, z].
+#' @author Jaejoon Song <jjsong2@@mdanderson.org>
+#' @keywords accelerometer
+#' @examples
+#' 
+#' ##
+#' ## Simulauting data for a single individual 
+#' ## with noninformative observation patterns
+#' ##
+#' simdata <- simPA(n=1, beta=1.5,type='noninf', minday=6, maxday=7)
+#' 
+#' 
+#' @export 
 simPA <- function(n, type='noninf', beta=1.5, minday, maxday){
   
   if(type=='noninf'){k2.min <- k1.min <- minday}

@@ -1,11 +1,41 @@
+#' Race plots of minutes of activity per day
+#' 
+#' Race plots of minutes of activity per day, for several activity types
+#' 
+#' 
+#' @param summary An object returned from function acc.
+#' @param title Title of the plot
+#' @param cex.title Font size of the title
+#' @param cex.text Font size of the race track labels
+#' @param cex.center Font size of the day indicator in the center of the plot
+#' @param color Color of the race tracks
+#' @return A plot is returned.
+#' @author Jaejoon Song <jjsong2@@mdanderson.org>
+#' @keywords accelerometer
+#' @examples
+#' 
+#' \dontrun{
+#' library(acc)
+#' ##
+#' ## Example: Simulate a dataset for seven days, for an individual with low MVPA level.
+#' ##
+#' mvpaModData <- simAcc(timelength=(60*24*7),paLevel='moderate')
+#' 
+#' summary1 <- acc(data=mvpaModData, tri='FALSE', axis='NULL',
+#' spuriousDef=20, nonwearDef=60, minWear=600,epoch=c('1 min','1 min'),
+#' patype=c('Sedentary','MVPA'),pacut=c(c(0,99),c(1952,Inf)),
+#' boutsize=c(10,10), tolerance=c('FALSE','TRUE'))
+#' summary1
+#' 
+#' racePlot(summary1,title="Summary of Physical Activity Per Day",
+#' cex.title=1,cex.text=1.2)
+#' }
+#' 
 #' @export
 #' @importFrom utils head tail 
 #' @importFrom graphics par axis title plot rect legend mtext text
 #' @importFrom circlize circos.clear circos.par circos.initialize circos.trackPlotRegion circos.lines circos.rect circos.text get.cell.meta.data
 #' @importFrom grDevices dev.new
-
-
-
 racePlot <- function(summary, title,
                      cex.title=1.8, cex.text=1.4, cex.center=1.5,
                      color = c("cadetblue1", "wheat","violetred1")){

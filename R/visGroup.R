@@ -1,11 +1,68 @@
+#' Group level plots
+#' 
+#' Group level plots of minutes of activity per day
+#' 
+#' 
+#' @param data Summary data by day
+#' @param ID Name of column that identifies groups or individuals
+#' @param activity Name of column for activity to be plotted
+#' @param type Type of plot. Options 'boxplot' or 'heatmap'
+#' @param title Title of the plot
+#' @param yaxis Axis title for vertical axis
+#' @param xaxis Whether to pring the x axis label. Options are TRUE or FALSE
+#' @param time Name of column that contains time index
+#' @param legendTitle Title of legend for 'type=heatmap'
+#' @param groupBy Option to plot by group, for 'type=heatmap'
+#' @param groupFun If groupBy is specified, how are two groups defined? Provide
+#' a function to specify a statistic that divides the groups. For example,
+#' specify 'median' to divide the two groups by the overall median of the data.
+#' @param levels Specifies thresholds for heatmap. For example, user can
+#' specify 'levels = c(0,300,600,1440)' to plot a heatmap of four levels.
+#' @param heatcol Specifies colors for the heatmap.
+#' @return A plot is returned.
+#' @author Jaejoon Song <jjsong2@@mdanderson.org>
+#' @keywords accelerometer
+#' @examples
+#' 
+#' 
+#' ##
+#' ## Example: A box plot
+#' ##
+#' \dontrun{
+#' library(acc)
+#' data(NHANES)
+#' NHANES_subset <- NHANES[1:300,]
+#' visGroup(
+#' data = NHANES_subset,
+#' activity = 'wearTime',
+#' ID = 'ID',
+#' type = 'boxplot',
+#' title = "Wear time at baseline",
+#' yaxis = "Wear time (minutes per day)",xaxis=TRUE)
+#' 
+#' 
+#' ##
+#' ## Example: A heatmap
+#' ##
+#' library(acc)
+#' data(NHANES)
+#' NHANES_subset <- NHANES[1:1000,]
+#' 
+#' visGroup(
+#' data = NHANES_subset,
+#' ID = 'ID',activity = 'wearTime',
+#' type = 'heatmap',title = "Wear time at baseline",
+#' yaxis = "ID",time = 'Day',
+#' legendTitle = "Wear time",
+#' groupBy = 'VO2max',groupFun = 'median',
+#' levels = c(0,300,600,1440),
+#' heatcol = c("white","mistyrose","lightpink","violetred1"))
+#' }
+#' 
 #' @export
 #' @importFrom utils head tail 
 #' @importFrom graphics par axis title plot rect legend mtext text boxplot
 #' @importFrom ggplot2 ggplot guide_legend aes geom_tile facet_grid theme_bw theme element_text scale_fill_manual ggtitle labs guides scale_x_continuous scale_y_discrete unit
-
-
-
-
 visGroup <- function(data,ID,activity,
                      type,title,yaxis,xaxis=TRUE,
                      time=NULL,legendTitle=NULL,

@@ -1,8 +1,49 @@
+#' Performs a simulation study
+#' 
+#' Performs a simulation study comparing bias and coverage probability when
+#' using either GEE or a semiparametric approach in analyzing accelerometer
+#' data
+#' 
+#' 
+#' @param n Number of individuals in a simulated data.
+#' @param numsim Number of simulated datesets.
+#' @param beta True coefficient for the binary covariate.
+#' @param nu Shape and rate parameter for Gamma distribution, in which the
+#' subject specific random variable Z_i was generated.
+#' @param mu Baseline mean minutes of physical activity per bout.
+#' @param inf Whether to generate data with informative observation and
+#' censoring times.
+#' @param nobs Average number of physical activity bouts.
+#' @return A simulated dataset is returned with four columns: [ID, time, min,
+#' x1, phi].
+#' @author Jaejoon Song <jjsong2@@mdanderson.org>
+#' @keywords accelerometer
+#' @examples
+#' 
+#' ##
+#' ## Simulation study when observation and censoring time patterns are noninformative
+#' ## Each simulated dataset contains data for 100 individuals
+#' ## Two datasets are generated, for illustration purposes
+#' ## Expected number of physical activity bouts is 7
+#' ##
+#' mysim_ind <- simStudy(n=100,numsim=2,beta=-.4,nu=5,mu=12,inf=FALSE,nobs=7)
+#' 
+#' ##
+#' ## Simulation study when observation and censoring time patterns are noninformative
+#' ## Each simulated dataset contains data for 100 individuals
+#' ## Two datasets are generated, for illustration purposes
+#' ## Expected number of physical activity bouts set to 7 when X_i = 1 and Z_i <= 1
+#' ## Expected number of physical activity bouts set to 2 when X_i = 0 or Z_i > 1
+#' ##
+#' mysim_inf <- simStudy(n=100,numsim=2,beta=-.4,nu=5,mu=12,inf=TRUE,nobs=c(7,2))
+#' 
+#' @export simStudy
 #' @export
 #' @importFrom utils head tail 
 #' @importFrom stats rbinom rgamma rpois na.omit aggregate 
-
 simStudy <- function(n,numsim,beta,nu,mu,inf=FALSE,nobs){
+  ID = NULL
+  rm(list = c("ID"))
   
   simResults <- list()
   estimates <- matrix(rep(NA,4*numsim),ncol=4)
@@ -20,7 +61,9 @@ simStudy <- function(n,numsim,beta,nu,mu,inf=FALSE,nobs){
     
     print(paste('Generated data for dataset ',i))
     
-    gee.fit <- suppressMessages(gee::gee(min ~ x1 ,data = simdata, id = ID, family = "poisson", corstr = "independence",silent=T))
+    gee.fit <- suppressMessages(gee::gee(min ~ x1 ,data = simdata, id = ID, 
+                                         family = "poisson", 
+                                         corstr = "independence",silent=TRUE))
     print(paste('GEE fit for dataset ',i))
     
     fitted.gee <- c(summary(gee.fit)$coefficients[2,1],
