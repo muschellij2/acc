@@ -7,6 +7,9 @@
 #' 
 #' 
 #' @param filename Speficy full file path and file name. e.g. C:/mydata.dat or
+#' @param dateformat format for dates
+#' @param timeformat format for times
+#' @param timezone time zone of the data captured
 #' C:/mydata.csv
 #' @return
 #' 

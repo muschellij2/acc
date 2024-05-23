@@ -13,7 +13,13 @@ readCounts(
 )
 }
 \arguments{
-\item{filename}{Speficy full file path and file name. e.g. C:/mydata.dat or
+\item{filename}{Speficy full file path and file name. e.g. C:/mydata.dat or}
+
+\item{dateformat}{format for dates}
+
+\item{timeformat}{format for times}
+
+\item{timezone}{time zone of the data captured
 C:/mydata.csv}
 }
 \value{

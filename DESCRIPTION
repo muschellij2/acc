@@ -10,9 +10,9 @@ Description: Processes accelerometer data from uni-axial and tri-axial devices,
     simulate accelerometer data.
 Depends:
     R (>= 2.10),
-    mhsmm,
-    gee
+    mhsmm
 Imports:
+    gee,
     zoo,
     PhysicalActivity,
     nleqslv,
@@ -25,6 +25,6 @@ Imports:
     R.utils,
     iterators,
     RcppRoll
-License: GPL (>= 2)
+License: GPL (>= 2) + LICENSE
 RoxygenNote: 7.3.1
 Encoding: UTF-8
