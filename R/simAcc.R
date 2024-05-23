@@ -41,7 +41,6 @@
 #' @keywords accelerometer
 #' @examples
 #' 
-#' \dontrun{
 #' ##
 #' ## Example: Simulate a dataset for two days, for an individual with low activity level.
 #' ##
@@ -72,7 +71,6 @@
 #'                      boutsize=c(10,10), tolerance=c('FALSE','TRUE'))
 #' summary
 #' 
-#' }
 #' 
 #' @export
 #' @importFrom utils head tail 

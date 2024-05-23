@@ -79,6 +79,7 @@
 #' library(acc)
 #' infile <- "CountsDataName.dat"
 #' counts <- readCounts(infile)
+#' }
 #' 
 #' 
 #' ##
@@ -138,7 +139,6 @@
 #'                      boutsize=c(10,10), tolerance=c('FALSE','TRUE'))
 #' summary2
 #' 
-#' }
 #' 
 #' @export
 #' @importFrom utils head tail 

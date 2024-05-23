@@ -106,6 +106,7 @@ information.
 library(acc)
 infile <- "DataName.dat"
 counts <- readCounts(infile)
+}
 
 
 ##
@@ -168,7 +169,6 @@ summary2 <- accSummary(data=counts, tri='FALSE', axis=NULL,
 summary2$validDates # This returns the same summary as when returnbout='FALSE'
 # summary2$PA # This returns the activity classification and bout information
 
-}
 
 }
 \references{

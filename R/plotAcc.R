@@ -13,7 +13,7 @@
 #' @keywords accelerometer
 #' @examples
 #' 
-#' \dontrun{
+#' \donttest{
 #' ##
 #' ## Example: Simulate a dataset for two days, for an individual with low MVPA level.
 #' ##

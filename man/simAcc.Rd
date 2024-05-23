@@ -67,7 +67,6 @@ please refer to the example for function acc.
 }
 \examples{
 
-\dontrun{
 ##
 ## Example: Simulate a dataset for two days, for an individual with low activity level.
 ##
@@ -98,7 +97,6 @@ summary <- acc(data=mvpaLowData, tri='FALSE', axis=NULL,
                      boutsize=c(10,10), tolerance=c('FALSE','TRUE'))
 summary
 
-}
 
 }
 \author{

@@ -62,7 +62,6 @@ Group level plots of minutes of activity per day
 ##
 ## Example: A box plot
 ##
-\dontrun{
 library(acc)
 data(NHANES)
 NHANES_subset <- NHANES[1:300,]
@@ -91,7 +90,6 @@ legendTitle = "Wear time",
 groupBy = 'VO2max',groupFun = 'median',
 levels = c(0,300,600,1440),
 heatcol = c("white","mistyrose","lightpink","violetred1"))
-}
 
 }
 \author{

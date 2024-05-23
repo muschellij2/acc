@@ -53,7 +53,7 @@ corresponds to the value of both shape and rate parameters. }
 }
 \examples{
 
-\dontrun{
+\donttest{
 data(NHANES)
 # Example of analyzing NHANES data 
 # Example 1: Not adjusted for sampling weights

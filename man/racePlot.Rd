@@ -34,7 +34,6 @@ Race plots of minutes of activity per day, for several activity types
 }
 \examples{
 
-\dontrun{
 library(acc)
 ##
 ## Example: Simulate a dataset for seven days, for an individual with low MVPA level.
@@ -49,7 +48,6 @@ summary1
 
 racePlot(summary1,title="Summary of Physical Activity Per Day",
 cex.title=1,cex.text=1.2)
-}
 
 }
 \author{

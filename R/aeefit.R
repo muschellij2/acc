@@ -47,7 +47,7 @@
 #' @keywords aeefit
 #' @examples
 #' 
-#' \dontrun{
+#' \donttest{
 #' data(NHANES)
 #' # Example of analyzing NHANES data 
 #' # Example 1: Not adjusted for sampling weights

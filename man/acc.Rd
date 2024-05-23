@@ -88,6 +88,7 @@ Summarizes accelerometer for multiple types of physical activities
 library(acc)
 infile <- "CountsDataName.dat"
 counts <- readCounts(infile)
+}
 
 
 ##
@@ -147,7 +148,6 @@ summary2 <- acc(data=counts, tri='FALSE', axis=NULL,
                      boutsize=c(10,10), tolerance=c('FALSE','TRUE'))
 summary2
 
-}
 
 }
 \references{

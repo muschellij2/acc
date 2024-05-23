@@ -47,7 +47,7 @@
 #' @keywords aeefit
 #' @examples
 #' 
-#' \dontrun{
+#' \donttest{
 #' 
 #' data(NHANES)
 #' formula <- aee(ID, Day, mvpaMinutes) ~ VO2max

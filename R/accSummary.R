@@ -95,6 +95,7 @@
 #' library(acc)
 #' infile <- "DataName.dat"
 #' counts <- readCounts(infile)
+#' }
 #' 
 #' 
 #' ##
@@ -157,7 +158,6 @@
 #' summary2$validDates # This returns the same summary as when returnbout='FALSE'
 #' # summary2$PA # This returns the activity classification and bout information
 #' 
-#' }
 #' 
 #' @export
 #' @importFrom utils head tail 

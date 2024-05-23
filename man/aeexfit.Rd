@@ -53,7 +53,7 @@ corresponds to the value of both shape and rate parameters. }
 }
 \examples{
 
-\dontrun{
+\donttest{
 
 data(NHANES)
 formula <- aee(ID, Day, mvpaMinutes) ~ VO2max

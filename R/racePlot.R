@@ -14,7 +14,6 @@
 #' @keywords accelerometer
 #' @examples
 #' 
-#' \dontrun{
 #' library(acc)
 #' ##
 #' ## Example: Simulate a dataset for seven days, for an individual with low MVPA level.
@@ -29,7 +28,6 @@
 #' 
 #' racePlot(summary1,title="Summary of Physical Activity Per Day",
 #' cex.title=1,cex.text=1.2)
-#' }
 #' 
 #' @export
 #' @importFrom utils head tail 

@@ -35,6 +35,10 @@
 #' @importFrom stats rbinom rgamma rpois na.omit aggregate
 simRtc <- function(n,beta,nu,mu,inf,nobs){
   
+  op = options()
+  on.exit({
+    options(op)
+  })
   options(warn=-1)
   
   x1=rbinom(n,1,0.5); 
@@ -61,13 +65,13 @@ simRtc <- function(n,beta,nu,mu,inf,nobs){
   
   K=max(k);
   # generating the random time gaps between events for each subject
-  y=matrix(,n,K);
+  y = matrix(data = NA, nrow = n, ncol=K);
   for (i in 1:n){
     y[i,1:k[i]]=stats::rexp(k[i],8/(60*24*7))
   } 
   
   # generating observation time points for each subject
-  t=matrix(,n,K);
+  t=matrix(data = NA, nrow = n, ncol=K);
   for (i in 1:n){
     for (j in 2:K){
       t[i,1] = y[i,1]
@@ -76,7 +80,7 @@ simRtc <- function(n,beta,nu,mu,inf,nobs){
   }
   
   # generating the number of events between time intervals
-  z=matrix(,n,K);
+  z=matrix(data = NA, nrow = n, ncol=K);
   xparms=c();for (s in 1:nrow(x)){xparms[s]<-sum(x[s,]*parms)}
   for (i in 1:n){
     z[i,1]<-rpois(1,mu*exp(xparms[i])*phi[i])

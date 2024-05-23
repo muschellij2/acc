@@ -28,7 +28,6 @@
 #' ##
 #' ## Example: A box plot
 #' ##
-#' \dontrun{
 #' library(acc)
 #' data(NHANES)
 #' NHANES_subset <- NHANES[1:300,]
@@ -57,7 +56,6 @@
 #' groupBy = 'VO2max',groupFun = 'median',
 #' levels = c(0,300,600,1440),
 #' heatcol = c("white","mistyrose","lightpink","violetred1"))
-#' }
 #' 
 #' @export
 #' @importFrom utils head tail 

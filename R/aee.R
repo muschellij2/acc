@@ -23,7 +23,7 @@
 #' @keywords aee
 #' @examples
 #' 
-#' \dontrun{
+#' \donttest{
 #' # We illustrate the use of function aeexfit
 #' # with the sample data from the National Health and Nutrition Examination Survey (NHANES) 
 #' # to examine the association between the cardiorespiratory function (i.e., VO2max) 
